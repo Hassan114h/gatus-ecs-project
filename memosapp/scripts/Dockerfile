@@ -17,8 +17,8 @@ RUN apk add --no-cache tzdata
 ENV TZ="UTC"
 
 COPY --from=backend /backend-build/memos /usr/local/memos/
-COPY ./scripts/entrypoint.sh /usr/local/memos/
-
+COPY scripts/entrypoint.sh /usr/local/memos/  
+#removed ./ from scripts
 EXPOSE 5230
 
 # Directory to store the data, which can be referenced as the mounting point.
