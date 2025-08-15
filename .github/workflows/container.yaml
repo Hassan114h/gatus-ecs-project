@@ -18,7 +18,7 @@ jobs:
         aws-region: ${{secrets.AWS_REGION}}
     
     - name: Login to Amazon ECR
-      id: login-pf-aws-ecr
+      id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
     - name: Build frontend
@@ -44,7 +44,7 @@ jobs:
 
     - name: Push Docker image
       env:
-        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
