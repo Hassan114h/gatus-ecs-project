@@ -42,10 +42,24 @@ jobs:
       run: |
         docker build -f ./memosapp/scripts/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp
 
+    - name: Quick Docker sanity check
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker run --rm $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memos --version
+
+    - name: Trivy Image Scan (fail on HIGH/CRITICAL)
+      uses: aquasecurity/trivy-action@0.24.0
+      with:
+        image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
+        severity: HIGH,CRITICAL
+
     - name: Push Docker image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-       docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG      
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
