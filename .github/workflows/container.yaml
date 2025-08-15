@@ -28,22 +28,19 @@ jobs:
        pnpm install
        pnpm release
 
-    
+    - name: Run Go tests
+      working-directory: ./memosapp
+      run: |
+        go mod download
+        go test ./...
+
     - name: Build Docker image
       env:
-        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-       docker build -f ./memosapp/scripts/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp
-      
-    - name: Run tests inside container
-      env:
-        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-       docker run --rm $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG go test ./...
+        docker build -f ./memosapp/scripts/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp
 
     - name: Push Docker image
       env:
