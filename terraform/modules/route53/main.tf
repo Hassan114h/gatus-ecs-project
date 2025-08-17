@@ -1,3 +1,15 @@
+resource "aws_route53_record" "alb_alias" {
+  zone_id = "Z0952190E6PJC8Q98ZNX"  
+  name    = "hassan114.click"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.alb_dns_name
+    zone_id                = aws_lb.alb_hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+
 resource "aws_acm_certificate" "cert" {
   domain_name       = "hassan114.click"
   validation_method = "DNS"
