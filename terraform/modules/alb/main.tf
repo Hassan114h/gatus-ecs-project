@@ -41,6 +41,7 @@ resource "aws_lb_target_group" "memos_tg" {
   port     = 5230 #put into variable
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip" 
 
   health_check {
     path                = "/health"
