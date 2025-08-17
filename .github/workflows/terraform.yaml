@@ -1,7 +1,6 @@
 name: Terraform CICD Pipeline - ECS PROJECT
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
@@ -12,7 +11,7 @@ jobs:
     env:
       AWS_REGION: 'eu-west-1'
       TF_VERSION: '1.4.0'
-      TFLINT_VERSION: 'v0.46.1' 
+      TFLINT_VERSION: 'v0.46.1'
 
     steps:
       - name: 'Checkout GitHub repository'
@@ -36,26 +35,26 @@ jobs:
           tflint_version: ${{ env.TFLINT_VERSION }}
 
       - name: 'Terraform Init'
-        run: terraform init terraform
+        run: terraform -chdir=terraform init
 
       - name: 'Terraform Format'
-        run: terraform fmt terraform
+        run: terraform -chdir=terraform fmt
 
       - name: 'Terraform Validate'
-        run: terraform validate terraform
+        run: terraform -chdir=terraform validate
 
       - name: 'TFLint'
         run: |
           tflint --init
-          tflint terraform
+          tflint
 
       - name: 'tfsec Security Scan'
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          args: --no-color terraform
+          args: --no-color .
 
       - name: 'Terraform Plan'
-        run: terraform plan -out=tfplan terraform
+        run: terraform -chdir=terraform plan -out=tfplan
 
       - name: 'Terraform Apply'
-        run: terraform apply -auto-approve terraform/tfplan
+        run: terraform -chdir=terraform apply -auto-approve tfplan
