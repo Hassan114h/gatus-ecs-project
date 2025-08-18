@@ -44,7 +44,7 @@ resource "aws_lb_target_group" "memos_tg" {
   target_type = "ip" 
 
   health_check {
-    protocol            = "http"
+    protocol            = "HTTP"
     path                = "/"
     interval            = 30
     timeout             = 6
