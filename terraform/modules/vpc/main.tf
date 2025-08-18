@@ -1,6 +1,4 @@
-# -------------------
-# VPC
-# -------------------
+
 resource "aws_vpc" "main" {
   cidr_block           = local.vpc_cidr
   enable_dns_support   = true
@@ -11,9 +9,6 @@ resource "aws_vpc" "main" {
   }
 }
 
-# -------------------
-# Internet Gateway
-# -------------------
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -21,9 +16,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# -------------------
-# Public Subnets
-# -------------------
 resource "aws_subnet" "public" {
   count                   = length(local.public_subnets)
   vpc_id                  = aws_vpc.main.id
@@ -55,9 +47,6 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# -------------------
-# Private Subnets
-# -------------------
 resource "aws_subnet" "private" {
   count             = length(local.private_subnets)
   vpc_id            = aws_vpc.main.id
@@ -83,9 +72,6 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-# -------------------
-# NAT Gateway for private subnets
-# -------------------
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {
@@ -95,7 +81,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id   # choose one public subnet
+  subnet_id     = aws_subnet.public[0].id   
   tags = {
     Name = "nat-gateway"
   }

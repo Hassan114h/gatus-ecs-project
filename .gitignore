@@ -1,20 +1,6 @@
-# Terraform state files
 *.tfstate
 *.tfstate.backup
-*.tfvars
 .terraform.lock.hcl
-
-# Crash logs
-crash.log
-
-# Sensitive override files
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# CLI configuration
 .terraform/
 
-# Local IDE files
-*.vscode/
+

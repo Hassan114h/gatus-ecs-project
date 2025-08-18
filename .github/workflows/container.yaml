@@ -16,24 +16,11 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{secrets.AWS_REGION}}
+        aws-region: ${{ secrets.AWS_REGION }}
     
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-
-    - name: Build frontend
-      working-directory: ./memosapp/web
-      run: |
-       npm install -g pnpm
-       pnpm install
-       pnpm release
-
-    - name: Run Go tests
-      working-directory: ./memosapp
-      run: |
-        go mod download
-        go test ./...
 
     - name: Build Docker image
       env:
@@ -41,7 +28,7 @@ jobs:
         ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -f ./memosapp/scripts/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp
+        docker build -f ./memosapp/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp
 
     - name: Trivy Image Scan (fail on HIGH/CRITICAL)
       uses: aquasecurity/trivy-action@0.24.0

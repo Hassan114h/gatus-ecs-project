@@ -48,11 +48,6 @@ jobs:
           tflint --init
           tflint
 
-    #  - name: 'tfsec Security Scan'
-     #   uses: aquasecurity/tfsec-action@v1.0.0
-      #  with:
-       #   args: --no-color .
-
       - name: 'Terraform Plan'
         run: terraform -chdir=terraform plan -out=tfplan
 
