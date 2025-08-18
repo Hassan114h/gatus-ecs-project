@@ -21,6 +21,7 @@ module "ecs" {
   alb_sg          = module.alb.alb_sg_id
   private_subnets = module.vpc.private_subnet_ids
   alb_target_arn  = module.alb.alb_target_arn
+  db_password = var.db_password
 }
 
 module "route53" {
