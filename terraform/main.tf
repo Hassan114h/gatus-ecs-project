@@ -5,6 +5,7 @@ module "tf-state" {
 
 module "vpc" {
   source = "./modules/vpc"
+  task_security_group_id = module.ecs.task_security_group_id
 }
 
 module "alb" {

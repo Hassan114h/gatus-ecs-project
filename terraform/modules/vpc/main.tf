@@ -84,7 +84,7 @@ resource "aws_security_group" "vpc_endpoint_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [local.vpc_cidr] 
+    cidr_blocks = [var.task_security_group_id] 
   }
 
   egress {
@@ -95,6 +95,8 @@ resource "aws_security_group" "vpc_endpoint_sg" {
   }
 }
 
+
+#####
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id             = aws_vpc.main.id
   service_name       = "com.amazonaws.${var.region}.ecr.api"
