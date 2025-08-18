@@ -37,7 +37,7 @@ variable "alb_target_arn" {
 
 variable "ecr_image_uri" {
   type    = string
-  default = "913513914993.dkr.ecr.eu-west-1.amazonaws.com/memosapp-repo-e:66e2824ea092fd3f5f87ec37f349c7a086a51ffd"
+  default = "913513914993.dkr.ecr.eu-west-1.amazonaws.com/memosapp-repo-e:09cbfb6d86727897fd0531a656a37ecc34a2501e"
 }
 
 variable "container_port" {
