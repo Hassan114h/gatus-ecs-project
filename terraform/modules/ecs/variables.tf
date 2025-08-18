@@ -49,3 +49,15 @@ variable "private_subnets" {
   description = "List of private subnet IDs where ECS tasks will be launched"
   type        = list(string)
 }
+
+variable "db_username" {
+  description = "The id of the VPC your working with"
+  type        = string
+  default     = "memosdb"
+}
+
+variable "db_password" {
+  description = "Password for the database user"
+  type        = string
+  sensitive   = true
+}

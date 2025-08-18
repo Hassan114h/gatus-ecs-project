@@ -46,21 +46,19 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
 resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = "memosecs-task-service"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.task_cpu 
-  memory                   = var.task_memory 
+  cpu                      = var.task_cpu
+  memory                   = var.task_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([{
-    name  = var.service_name 
-    image = var.ecr_image_uri 
-
-    cpu    = var.task_cpu 
-    memory = var.task_memory 
+    name  = var.service_name
+    image = var.ecr_image_uri
+    cpu    = var.task_cpu
+    memory = var.task_memory
     essential = true
 
     portMappings = [{
@@ -68,6 +66,17 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       hostPort      = var.container_port
       protocol      = "tcp"
     }]
+
+    environment = [
+      { 
+        name  = "MEMOS_DRIVER" 
+        value = "postgres" 
+      },
+      { 
+        name  = "MEMOS_DSN" 
+        value = "postgres://${var.db_username}:${var.db_password}@${aws_db_instance.memos.address}:5432/memosdb?sslmode=disable" 
+      }
+    ]
   }])
 }
 
@@ -99,5 +108,42 @@ resource "aws_ecs_service" "memos_service" {
     target_group_arn = var.alb_target_arn 
     container_name   = var.service_name
     container_port   = var.container_port
+  }
+}
+
+
+resource "aws_db_subnet_group" "memos" {
+  name       = "memos-db-subnets"
+  subnet_ids = var.private_subnets
+}
+
+resource "aws_db_instance" "memos" {
+  allocated_storage    = 20
+  engine               = "postgres"
+  engine_version       = "15.4"
+  instance_class       = "db.t3.micro"
+  username             = var.db_username
+  password             = var.db_password
+  db_subnet_group_name = aws_db_subnet_group.memos.name
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
+  skip_final_snapshot  = true
+}
+
+resource "aws_security_group" "db_sg" {
+  name   = "db-sg"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.task_security.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
