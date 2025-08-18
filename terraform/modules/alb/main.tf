@@ -49,7 +49,7 @@ resource "aws_lb_target_group" "memos_tg" {
     timeout             = 6
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    matcher             = "200"
+    matcher             = "200-399"
   }
 }
 
