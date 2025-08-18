@@ -120,7 +120,7 @@ resource "aws_db_subnet_group" "memos" {
 resource "aws_db_instance" "memos" {
   allocated_storage    = 20
   engine               = "postgres"
-  engine_version       = "15.4"
+  engine_version       = "15.3"
   instance_class       = "db.t3.micro"
   username             = var.db_username
   password             = var.db_password
