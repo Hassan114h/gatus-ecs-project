@@ -34,11 +34,10 @@ resource "aws_security_group" "alb_security_group" {
   vpc_id = var.vpc_id
 }
  
-# Create ALB Target Group and then go BACK to ECS Module to define it there too 
 
 resource "aws_lb_target_group" "memos_tg" {
   name     = "memos-tg"
-  port     = 5230 #put into variable
+  port     = 5230 
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip" 
@@ -76,7 +75,7 @@ resource "aws_lb_listener" "alb_listener_https" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = var.acm_cert_arn ## Create this cert
+  certificate_arn   = var.acm_cert_arn 
 
   default_action {
     type             = "forward"

@@ -1,6 +1,6 @@
 variable "service_name" {
     type = string
-    default = "sc-ecs-service" ###
+    default = "sc-ecs-service" 
 }
 
 variable "region" {
@@ -23,4 +23,3 @@ variable "public_subnets" {
 }
 
 
-#Define subnet 
