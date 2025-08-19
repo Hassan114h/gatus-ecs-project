@@ -29,6 +29,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       
       - name: Destroy infra 
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
         run: |
           terraform init
           terraform destroy -auto-approve
