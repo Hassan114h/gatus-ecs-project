@@ -20,6 +20,7 @@ module "ecs" {
   alb_sg          = module.alb.alb_sg_id
   private_subnets = module.vpc.private_subnet_ids
   alb_target_arn  = module.alb.alb_target_arn
+  lb_https_listener_arn = module.alb.lb_https_listener_arn
 }
 
 module "route53" {
