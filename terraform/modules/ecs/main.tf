@@ -91,6 +91,7 @@ resource "aws_ecs_cluster" "main" {
 }
 
 resource "aws_ecs_service" "memos_service" {
+  depends_on = [aws_db_instance.memos]
   name            = "memos-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
