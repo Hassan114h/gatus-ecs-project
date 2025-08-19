@@ -5,7 +5,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform Lint, Security Check, and Deploy'
+    name: 'Terraform Pipeline
     runs-on: ubuntu-latest
 
     env:
@@ -35,13 +35,13 @@ jobs:
           tflint_version: ${{ env.TFLINT_VERSION }}
 
       - name: 'Terraform Init'
-        run: terraform init
+        run: terraform -chdir=terraform init
 
       - name: 'Terraform Format'
-        run: terraform fmt
+        run: terraform -chdir=terraform fmt
 
       - name: 'Terraform Validate'
-        run: terraform validate
+        run: terraform -chdir=terraform validate
 
       - name: 'TFLint'
         run: |
@@ -49,7 +49,7 @@ jobs:
           tflint
 
       - name: 'Terraform Plan'
-        run: terraform plan -out=tfplan
+        run: terraform -chdir=terraform plan -out=tfplan
 
       - name: 'Terraform Apply'
-        run: terraform apply -auto-approve tfplan
+        run: terraform -chdir=terraform apply -auto-approve tfplan
