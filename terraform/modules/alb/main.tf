@@ -36,8 +36,8 @@ resource "aws_security_group" "alb_security_group" {
  
 
 resource "aws_lb_target_group" "memos_tg" {
-  name     = "memos-tg"
-  port     = 5230 
+  name     = "gatus-tg"
+  port     = 8080   
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip" 

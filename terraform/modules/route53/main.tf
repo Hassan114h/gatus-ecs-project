@@ -1,6 +1,6 @@
 resource "aws_route53_record" "alb_alias" {
-  zone_id = "Z0952190E6PJC8Q98ZNX"  
-  name    = "hassan114.click"
+  zone_id = var.alb_hosted_zone_id
+  name    = var.alb_dns_name
   type    = "A"
 
   alias {
@@ -11,7 +11,7 @@ resource "aws_route53_record" "alb_alias" {
 }
 
 resource "aws_acm_certificate" "cert" {
-  domain_name       = "hassan114.click"
+  domain_name       = var.alb_dns_name
   validation_method = "DNS"
 
   lifecycle {
@@ -24,7 +24,7 @@ resource "aws_route53_record" "acm_cert_validation" {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => dvo
   }
 
-  zone_id = "Z0952190E6PJC8Q98ZNX"  
+  zone_id = var.alb_hosted_zone_id
   name    = each.value.resource_record_name
   type    = each.value.resource_record_type
   ttl     = 60

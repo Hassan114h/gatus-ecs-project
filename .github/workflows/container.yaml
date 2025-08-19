@@ -1,4 +1,4 @@
-name: CICD Pipeline
+name: Docker CICD Pipeline
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ jobs:
         ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -f ./memosapp/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./memosapp       
+        docker build -f ./gatus/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./gatus      
 
     - name: Trivy Image Scan (fail on HIGH/CRITICAL)
       uses: aquasecurity/trivy-action@0.24.0

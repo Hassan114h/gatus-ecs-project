@@ -1,6 +1,6 @@
 variable "service_name" {
   type    = string
-  default = "memos"
+  default = "gatus_sv"
 }
 
 variable "region" {
@@ -42,7 +42,7 @@ variable "ecr_image_uri" {
 
 variable "container_port" {
   type    = number
-  default = 5230
+  default = 8080
 }
 
 variable "private_subnets" {
@@ -50,14 +50,3 @@ variable "private_subnets" {
   type        = list(string)
 }
 
-variable "db_username" {
-  description = "The id of the VPC your working with"
-  type        = string
-  default     = "memosdb"
-}
-
-variable "db_password" {
-  description = "Password for the database user"
-  type        = string
-  sensitive   = true
-}

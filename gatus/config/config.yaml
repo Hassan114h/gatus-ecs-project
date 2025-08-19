@@ -1,0 +1,18 @@
+web:
+  port: 8080
+  address: 0.0.0.0
+
+endpoints:
+  - name: self
+    url: http://localhost:8080/health
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Public Domain (HTTPS)
+    url: https://hassan114.click/
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 500"    # Warning tier if slower than 500ms
+      - "[RESPONSE_TIME] < 1000"   # Unhealthy if slower than 1000ms

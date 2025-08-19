@@ -1,8 +1,3 @@
-variable "service_name" {
-    type = string
-    default = "sc-ecs-service" 
-}
-
 variable "region" {
     type = string
     default = "eu-west-1"
