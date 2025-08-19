@@ -5,7 +5,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform Pipeline
+    name: 'Terraform Pipeline'
     runs-on: ubuntu-latest
 
     env:
