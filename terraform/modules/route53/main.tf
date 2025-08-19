@@ -1,15 +1,3 @@
-resource "aws_route53_record" "alb_alias" {
-  zone_id = var.alb_hosted_zone_id
-  name    = var.alb_dns_name
-  type    = "A"
-
-  alias {
-    name                   = var.alb_dns_name
-    zone_id                = var.alb_hosted_zone_id
-    evaluate_target_health = true
-  }
-}
-
 resource "aws_acm_certificate" "cert" {
   domain_name       = var.alb_dns_name
   validation_method = "DNS"
@@ -30,4 +18,20 @@ resource "aws_route53_record" "acm_cert_validation" {
 resource "aws_acm_certificate_validation" "acm_cert" {
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [aws_route53_record.acm_cert_validation.fqdn]
+
+  timeouts {
+    create = "15m"
+  }
+}
+
+resource "aws_route53_record" "alb_alias" {
+  zone_id = var.alb_hosted_zone_id
+  name    = var.alb_dns_name
+  type    = "A"
+
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_hosted_zone_id
+    evaluate_target_health = true
+  }
 }

@@ -7,5 +7,5 @@ variable "alb_dns_name" {
 variable "alb_hosted_zone_id" {
   description = "The hosted zone ID of the ALB"
   type        = string
-  default = "Z0952190E6PJC8Q98ZNX"  
+  default = "Z0952190E6PJC8Q98ZNX"
 }
