@@ -93,7 +93,7 @@ resource "aws_ecs_service" "memos_service" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.memos_tg.arn
+    target_group_arn = var.alb_target_arn
     container_name   = var.service_name
     container_port   = var.container_port
   }
