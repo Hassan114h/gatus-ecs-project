@@ -35,13 +35,13 @@ jobs:
           tflint_version: ${{ env.TFLINT_VERSION }}
 
       - name: 'Terraform Init'
-        run: terraform -chdir=terraform init
+        run: terraform init
 
       - name: 'Terraform Format'
-        run: terraform -chdir=terraform fmt
+        run: terraform fmt
 
       - name: 'Terraform Validate'
-        run: terraform -chdir=terraform validate
+        run: terraform validate
 
       - name: 'TFLint'
         run: |
@@ -49,11 +49,7 @@ jobs:
           tflint
 
       - name: 'Terraform Plan'
-        env:
-          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}  
-        run: terraform -chdir=terraform plan -out=tfplan
+        run: terraform plan -out=tfplan
 
       - name: 'Terraform Apply'
-        env:
-          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}  
-        run: terraform -chdir=terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan
