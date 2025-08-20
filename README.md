@@ -47,7 +47,8 @@ Update the following files with your values:
 # Clone repository
 $ git clone https://github.com/your-username/gatus-ecs-fargate
 $ cd gatus-ecs-fargate
-```
+
 - **Run Docker CI/CD pipeline manually**: Go to **GitHub Actions** → select **Docker CICD Pipeline** → click **Run workflow**.
 
 - **Run Terraform pipeline manually**: Go to **GitHub Actions** → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.
+```
