@@ -5,9 +5,11 @@
   <p>
     <a href="#"><img src="https://img.shields.io/badge/Cloud-AWS-FF9900?logo=amazon-aws" alt="AWS | ECS Fargate"></a>
     <a href="#"><img src="https://img.shields.io/badge/IaC-Terraform-623CE4?logo=terraform" alt="Terraform"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Container-Docker-2496ED?logo=docker" alt="Docker"></a>
     <a href="#"><img src="https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?logo=github-actions" alt="CI/CD"></a>
   </p>
 </div>
+
 
 This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for security, scalability and infrastructure automation. 
 
