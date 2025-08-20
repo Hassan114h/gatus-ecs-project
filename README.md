@@ -10,7 +10,17 @@
   </p>
 
   <h3 style="font-weight: normal; color: #555; font-size: 1.5em;">
-    This project shows how to deploy Gatus, a status monitoring service,<br/>
+    Gatus, a status monitoring service,<br/>
     on AWS ECS Fargate using Terraform and GitHub Actions.
   </h3>
 </div>
+
+## Insert Diagram 
+
+This project shows a fully functional deployment of **Gatus** on **AWS ECS Fargate**, following best practices for infrastructure and high availability:
+
+- **Terraform backend with S3**: central state storage, versioning for rollbacks, and encryption for security.  
+- **Highly available ECS Fargate setup**: Application Load Balancer, Route 53 DNS, and ACM TLS/SSL for secure traffic.  
+- **Automated CI/CD deployment**: infrastructure provisioned and updated reliably through pipelines.  
+
+Provides a scalable, secure, and production-ready monitoring solution using Gatus.
