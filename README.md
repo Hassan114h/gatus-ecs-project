@@ -9,14 +9,12 @@
     <a href="#"><img src="https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?logo=github-actions" alt="CI/CD"></a>
   </p>
 </div>
+----
 
-### Navigation
-- [Key Features](#key-features)
-- [Architecture Diagram](#architecture-diagram)
-- [How To Use](#how-to-use)
-- [Screenshots](#screenshots)
+## Navigation
+[Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use](#how-to-use) • [Screenshots](#screenshots)
 
-
+---
 This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for security, scalability and infrastructure automation. 
 
 Key features include:
