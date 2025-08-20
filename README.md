@@ -10,8 +10,7 @@
   </p>
 
   <h3 style="font-weight: normal; color: #555; font-size: 1.5em;">
-    Gatus, a status monitoring service,<br/>
-    on AWS ECS Fargate using Terraform and GitHub Actions.
+    Gatus, a status monitoring service, on AWS ECS Fargate using Terraform and GitHub Actions.
   </h3>
 </div>
 
