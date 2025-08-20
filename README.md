@@ -9,7 +9,7 @@
     <a href="#"><img src="https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?logo=github-actions" alt="CI/CD"></a>
   </p>
 
-## <h3>
+  <h3 style="font-weight: normal; color: #555; font-size: 1.5em;">
     This project shows how to deploy Gatus, a status monitoring service,<br/>
     on AWS ECS Fargate using Terraform and GitHub Actions.
   </h3>
