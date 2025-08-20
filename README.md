@@ -11,7 +11,7 @@
 </div>
 
 ## Navigation
-[Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use](#how-to-use) • [Screenshots](#screenshots)
+[Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use It](#how-to-use) • [Screenshots](#screenshots)
 
 ---
 This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for Docker containerisation and Terraform IaC, ensuring scalability and infrastructure automation. 
@@ -27,7 +27,7 @@ This project provides a fully functional, production-ready deployment of **Gatus
 ## Architecture Diagram
 <img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/3e168beb-0e9d-4e8f-a4b8-1778ad162bd1" />
 
-## How To Use
+## How To Use It
 
 ### Prerequisites
 - GitHub Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `REPO_NAME`  
