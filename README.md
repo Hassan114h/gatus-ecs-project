@@ -36,7 +36,6 @@ This project provides a fully functional, production-ready deployment of **Gatus
 
 ### Steps
 ```bash
-# Clone repository
 $ git clone https://github.com/your-username/gatus-ecs-fargate
 $ cd gatus-ecs-fargate
 ```
