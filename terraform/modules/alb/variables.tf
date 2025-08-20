@@ -17,4 +17,7 @@ variable "public_subnets" {
   type        = list(string)
 }
 
-
+variable "container_port" {
+  type    = number
+  default = 8080
+}
