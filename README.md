@@ -21,4 +21,4 @@ Key features include:
 
 This setup delivers a **scalable, secure, and highly available monitoring solution** using Gatus.
 
-<img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/7bb41c48-02fb-48e4-92bb-31dbbb8834c4" />
+<img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/3e168beb-0e9d-4e8f-a4b8-1778ad162bd1" />
