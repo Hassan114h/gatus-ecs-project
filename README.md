@@ -14,7 +14,7 @@
 [Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use](#how-to-use) • [Screenshots](#screenshots)
 
 ---
-This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for security, scalability and infrastructure automation. 
+This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for Docker containerisation and Terraform IaC, ensuring scalability and infrastructure automation. 
 
 Key features include:
 - **Terraform backend with S3**: Centralised state storage, versioning for rollbacks and encryption to secure sensitive data.
