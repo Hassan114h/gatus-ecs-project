@@ -24,8 +24,6 @@ Key features include:
 - **Route 53 hosted zone**: Manages DNS with alias records pointing to the ALB.
 - **Automated CI/CD pipelines**: Docker pipeline builds, scans and pushes Gatus images to ECR. Terraform pipeline provisions and manages AWS ECS infrastructure with linting and validation.
 
-This setup delivers a **scalable, secure, and highly available monitoring solution** using Gatus.
-
 ## Architecture Diagram
 <img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/3e168beb-0e9d-4e8f-a4b8-1778ad162bd1" />
 
