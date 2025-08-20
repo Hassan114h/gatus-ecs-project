@@ -9,7 +9,7 @@ variable "region" {
 }
 
 variable "vpc_id" {
-  description = "The id of the VPC your working with"
+  description = "The id of the VPC"
   type        = string
 }
 

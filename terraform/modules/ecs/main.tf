@@ -1,5 +1,3 @@
-# security group of the ecs tasks that has the ingress rules of the alb 
-
 resource "aws_security_group" "task_security" {
     name = "ecs_sg"
     description = "ECS task security group"
@@ -22,8 +20,6 @@ resource "aws_security_group" "task_security" {
 }
 
 
-
-# IAM Role for ECS Task Execution
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs-task-role"
 

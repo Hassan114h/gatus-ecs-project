@@ -1,11 +1,10 @@
 variable "domain_name" {
-  description = "The DNS name of the ALB"
-  type        = string
+  type  = string
   default = "hassan114.click"
 }
 
 variable "hosted_zone_id" {
-  description = "The hosted zone ID of the ALB"
+  description = "The hosted zone ID of the domain"
   type        = string
   default = "Z0952190E6PJC8Q98ZNX"
 }
