@@ -48,8 +48,8 @@ Update the following files with your values:
 - **Root module**: `provider.tf` & `local.tf` → provider config  
 - **Gatus config**: `config.yaml` → public domains + optional features (see [Gatus docs](https://gatus.io/))  
 
-- **Run Docker CI/CD pipeline manually**: Go to GitHub Actions → select **Docker CICD Pipeline** → click **Run workflow**.  
+**Run Docker CI/CD pipeline manually**: Go to GitHub Actions → select **Docker CICD Pipeline** → click **Run workflow**.  
 - **ECS module**: `variables.tf` → `region`, `docker_image`  
 
-- **Run Terraform pipeline manually**: Go to GitHub Actions → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.  
+**Run Terraform pipeline manually**: Go to GitHub Actions → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.  
 
