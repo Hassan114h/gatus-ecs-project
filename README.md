@@ -9,7 +9,6 @@
     <a href="#"><img src="https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?logo=github-actions" alt="CI/CD"></a>
   </p>
 </div>
-----
 
 ## Navigation
 [Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use](#how-to-use) • [Screenshots](#screenshots)
