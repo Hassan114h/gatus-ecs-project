@@ -1,10 +1,6 @@
 <div align="center">
   <img width="100" height="100" alt="Gatus Logo" src="https://github.com/user-attachments/assets/bb670d76-1282-4bad-a9e9-4190d9f43410" />
   
- <div align="center">
-
-  <img width="100" height="100" alt="Gatus Logo" src="https://github.com/user-attachments/assets/bb670d76-1282-4bad-a9e9-4190d9f43410" />
-  
   <h1 style="font-size: 3.5em;">🟢 Gatus on ECS Fargate</h1>
 
   <p>
@@ -17,7 +13,7 @@
     This project demonstrates a fully functional deployment of <strong>Gatus</strong> on <strong>AWS ECS Fargate</strong>, following best practices for infrastructure, high availability, and automation. Key features include:
   </p>
 
-  <ul style="list-style-type: none; padding-left: 0; text-align: left; display: inline-block; text-align: left; max-width: 700px;">
+  <ul style="list-style-type: none; padding-left: 0; display: inline-block; text-align: left; max-width: 700px;">
     <li>• <strong>Terraform backend with S3</strong>: central state storage, versioning for rollbacks, and encryption for security.</li>
     <li>• <strong>Highly available ECS Fargate setup</strong>: Application Load Balancer, Route 53 DNS, and ACM TLS/SSL for secure traffic.</li>
     <li>• <strong>VPC Configuration</strong>: 2 public subnets (one per AZ) for ALB and NAT Gateways, 2 private subnets (one per AZ) for ECS tasks.</li>
@@ -29,5 +25,4 @@
   <p style="font-size: 1.2em; color: #555; text-align: center; max-width: 800px;">
     Provides a scalable, secure, and production-ready monitoring solution using Gatus.
   </p>
-
 </div>
