@@ -40,7 +40,7 @@ Update the following files with your values:
 - **Route53 module:** `variables.tf` → `domain_name`, `hosted_zone_id`  
 - **VPC module:** `variables.tf` & `local.tf` → regions, subnets  
 - **Root module:** `provider.tf` & `local.tf` → provider config  
-- **Gatus config:** `config.yaml` → public domains + optional features ([Gatus docs](https://gatus.dev/))  
+- **Gatus config:** `config.yaml` → public domains + optional features ([Gatus docs](https://gatus.io//))  
 
 ### Steps
 ```bash
