@@ -9,9 +9,10 @@
   </p>
 </div>
 
-This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for security, scalability, and infrastructure automation. Key features include:
+This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for security, scalability and infrastructure automation. 
 
-- **Terraform backend with S3**: centralized state storage, versioning for rollbacks, and encryption to secure sensitive data.
+Key features include:
+- **Terraform backend with S3**: centralized state storage, versioning for rollbacks and encryption to secure sensitive data.
 - **VPC configuration**: 2 public subnets (one per AZ) for ALB and NAT Gateways, 2 private subnets (one per AZ) for ECS tasks.
 - **Security Groups**: inbound/outbound rules to control traffic between the ALB and ECS tasks.
 - **ECR repository**: stores Docker images for ECS tasks.
