@@ -23,4 +23,31 @@ Key features include:
 
 This setup delivers a **scalable, secure, and highly available monitoring solution** using Gatus.
 
+## Architecture Diagram
 <img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/3e168beb-0e9d-4e8f-a4b8-1778ad162bd1" />
+
+## How To Use
+
+### Prerequisites
+- GitHub Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `REPO_NAME`  
+- S3 bucket for Terraform remote state  
+
+### Configuration
+Update the following files with your values:  
+- **Update S3 bucket for Terraform state**: In your Terraform configuration, edit the data "aws_s3_bucket" "terraform_state" block to match your bucket name.
+- **ALB module:** `variables.tf` → `region`  
+- **ECS module:** `variables.tf` → `region`, `docker_image`  
+- **Route53 module:** `variables.tf` → `domain_name`, `hosted_zone_id`  
+- **VPC module:** `variables.tf` & `local.tf` → regions, subnets  
+- **Root module:** `provider.tf` & `local.tf` → provider config  
+- **Gatus config:** `config.yaml` → public domains + optional features ([Gatus docs](https://gatus.dev/))  
+
+### Steps
+```bash
+# Clone repository
+$ git clone https://github.com/your-username/gatus-ecs-fargate
+$ cd gatus-ecs-fargate
+```
+- **Run Docker CI/CD pipeline manually**: Go to **GitHub Actions** → select **Docker CICD Pipeline** → click **Run workflow**.
+
+- **Run Terraform pipeline manually**: Go to **GitHub Actions** → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.
