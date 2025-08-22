@@ -26,7 +26,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: 'Set up Terraform'
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
@@ -39,7 +39,7 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init
 
-      - name: 'Terraform Format'
+      - name: 'Terraform Format (Check)'
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform fmt -check
 
