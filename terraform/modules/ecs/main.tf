@@ -1,22 +1,26 @@
 resource "aws_security_group" "task_security" {
-    name = "ecs_sg"
-    description = "ECS task security group"
+  name        = "ecs_sg"
+  description = "ECS task security group"
 
-    ingress {
-        from_port = var.container_port 
-        to_port = var.container_port 
-        protocol = "tcp"
-        security_groups = [var.alb_sg] 
-    }
+  ingress {
+    from_port       = var.container_port 
+    to_port         = var.container_port 
+    protocol        = "tcp"
+    security_groups = [var.alb_sg] 
+  }
 
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = var.vpc_id
+
+  tags = {
+    Name = "ecs_sg"
+  }
 }
 
 
@@ -35,6 +39,10 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       }
     ]
   })
+
+  tags = {
+    Name = "ecs-task-role"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
@@ -63,6 +71,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       protocol      = "tcp"
     }]
   }])
+
+  tags = {
+    Name = "gatusecs-task-service"
+  }
 }
 
 resource "aws_ecs_cluster" "main" {
@@ -71,6 +83,10 @@ resource "aws_ecs_cluster" "main" {
   setting {
     name  = "containerInsights"
     value = "enabled"
+  }
+
+  tags = {
+    Name = "gatus-cluster"
   }
 }
 
@@ -97,4 +113,8 @@ resource "aws_ecs_service" "memos_service" {
   depends_on = [
     var.lb_https_listener_arn
   ]
+
+  tags = {
+    Name = "gatus-service"
+  }
 }
