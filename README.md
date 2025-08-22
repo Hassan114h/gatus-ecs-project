@@ -25,7 +25,7 @@ This project provides a fully functional, production-ready deployment of **Gatus
 - **Automated CI/CD pipelines**: Docker pipeline builds, scans and pushes Gatus images to ECR. Terraform pipeline provisions and manages AWS ECS infrastructure with linting and validation.
 
 ## Architecture Diagram
-<img width="550" height="750" alt="image" src="https://github.com/user-attachments/assets/3e168beb-0e9d-4e8f-a4b8-1778ad162bd1" />
+![ezgif-719eab2db9b7ab](https://github.com/user-attachments/assets/dec86829-9eff-4bd2-9b14-302f281f6d48)
 
 ## How To Use It
 
