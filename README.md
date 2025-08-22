@@ -11,7 +11,7 @@
 </div>
 
 ## Navigation
-[Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use It](#how-to-use) • [Screenshots](#screenshots)
+[Key Features](#key-features) • [Architecture Diagram](#architecture-diagram) • [How To Use It](#how-to-use-it) • [App Walkthrough](#App-Walkthrough)
 
 ---
 This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for Docker containerisation and Terraform IaC, ensuring scalability and infrastructure automation. 
@@ -53,6 +53,6 @@ Update the following files with your values:
 
 **Run Terraform pipeline manually**: Go to GitHub Actions → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.  
 
-## Screenshots
-<img width="653" height="381" alt="image" src="https://github.com/user-attachments/assets/c700d651-4a2c-469e-9dc3-e08373cbd947" />
-<img width="653" height="381" alt="image" src="https://github.com/user-attachments/assets/e3476e4a-34c4-4535-a980-edc120d59402" />
+## App Walkthrough
+![ezgif-774a6d651a144b](https://github.com/user-attachments/assets/0df0f318-6134-44c9-b744-4972eea7ba96)
+
