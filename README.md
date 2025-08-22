@@ -22,7 +22,7 @@ This project provides a fully functional, production-ready deployment of **Gatus
 - **Security Groups**: Inbound/outbound rules to control traffic between the ALB and ECS tasks.
 - **ECR repository**: Stores Docker images for ECS tasks.
 - **Route 53 hosted zone**: Manages DNS with alias records pointing to the ALB.
-- **Automated CI/CD pipelines**: Docker pipeline builds, scans and pushes Gatus images to ECR. Terraform pipeline provisions and manages AWS ECS infrastructure with linting and validation.
+- **Automated CI/CD pipelines**: Docker pipeline builds, scans and pushes Gatus images to ECR. Terraform pipeline provisions and manages AWS ECS infrastructure with linting, validation and TFsec.
 
 ## Architecture Diagram
 ![ezgif-719eab2db9b7ab](https://github.com/user-attachments/assets/dec86829-9eff-4bd2-9b14-302f281f6d48)
