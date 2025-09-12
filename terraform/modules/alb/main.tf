@@ -98,3 +98,50 @@ resource "aws_lb_listener" "alb_listener_https" {
     Name = "https_listener"
   }
 }
+
+
+## AWS WAF
+resource "aws_wafv2_web_acl" "aws_common_rule" {
+  name        = "aws_common_rule"
+  description = "AWS COMMON RULE SET"
+  scope       = "REGIONAL"
+
+  # Default action, allow requests unless blocked by a rule
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 0
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "hassan114WAF"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "hassan114WAF_ACL"
+    sampled_requests_enabled   = true
+  }
+}
+
+
+ resource "aws_wafv2_web_acl_association" "alb" {
+   resource_arn = aws_lb.application_load_balancer.arn 
+   web_acl_arn  = aws_wafv2_web_acl.aws_common_rule.arn
+ }

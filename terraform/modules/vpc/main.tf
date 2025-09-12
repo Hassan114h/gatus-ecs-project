@@ -71,23 +71,55 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_eip" "nat" {
-  domain = "vpc"
+#ECR API endpoint used as a token to validate relationship between ecs and ecr
+resource "aws_security_group" "endpoint" {
+  name        = "ecr-endpoint-sg"
+  description = "Allow ECS tasks to reach ECR API endpoint"
+  vpc_id      = aws_vpc.main.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "endpoint_from_ecs" {
+  security_group_id            = aws_security_group.endpoint.id
+  referenced_security_group_id = var.task_security_group_id
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
+
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id             = aws_vpc.main.id
+  service_name       = "com.amazonaws.${var.region}.ecr.api"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.endpoint.id]
+
+  private_dns_enabled = true
+  
   tags = {
-    Name = "nat-eip"
+    Name = "ecr-api-endpoint"
   }
 }
 
-resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id   
+# ECR DKR endpoint (used by ECS to pull images)
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id             = aws_vpc.main.id
+  service_name       = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.endpoint.id]
+
+  private_dns_enabled = true
+
   tags = {
-    Name = "nat-gateway"
+    Name = "ecr-dkr-endpoint"
   }
 }
 
-resource "aws_route" "private_nat" {
-  route_table_id         = aws_route_table.private.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat.id
+## S3 Gateway Endpoint 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.eu-west-1.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.private.id]
 }
+

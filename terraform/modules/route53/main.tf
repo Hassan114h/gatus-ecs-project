@@ -12,23 +12,31 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_route53_record" "acm_cert_validation" {
-  zone_id = var.hosted_zone_id
-  name    = tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_name
-  type    = tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_type
-  ttl     = 60
-  records = [tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_value]
+  for_each = {
+    for dvo in aws_acm_certificate.cert.domain_validation_options :
+    dvo.domain_name => {
+      name  = dvo.resource_record_name
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  }
+
+  zone_id         = var.hosted_zone_id
+  name            = each.value.name
+  type            = each.value.type
+  ttl             = 60
+  records         = [each.value.value]
+  allow_overwrite = true
 }
 
 resource "aws_acm_certificate_validation" "cert_validation" {
   certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [aws_route53_record.acm_cert_validation.fqdn]
+  validation_record_fqdns = [for r in aws_route53_record.acm_cert_validation : r.fqdn]
+  
+  depends_on = [aws_acm_certificate.cert]
 
-  timeouts {
-    create = "15m"
-  }
-
-  depends_on = [aws_route53_record.acm_cert_validation]
 }
+
 
 resource "aws_route53_record" "alb_alias" {
   zone_id = var.hosted_zone_id
@@ -40,6 +48,4 @@ resource "aws_route53_record" "alb_alias" {
     zone_id                = var.alb_hosted_zone_id
     evaluate_target_health = true
   }
-
-  depends_on = [aws_acm_certificate_validation.cert_validation]
 }
