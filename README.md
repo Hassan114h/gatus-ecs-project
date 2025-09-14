@@ -23,13 +23,14 @@ This project provides a fully functional, production-ready deployment of **Gatus
 - **Application Load Balancer (ALB) with AWS WAF**: Provides secure ingress with managed firewall rules and continuous health monitoring. 
   - Attached **AWSManagedRulesCommonRuleSet** for  protection against common web exploits.
   - Configured ALB **health checks** to ensure ECS tasks are only considered healthy and added to the target group when the app is responsive.
-- **Blue/Green deployments with CodeDeploy**: Zero-downtime ECS service updates, automatic rollback on failed health checks, and controlled traffic shifting.
+- **Blue/Green deployments with CodeDeploy**: Zero downtime ECS service updates, automatic rollback on failed health checks, and controlled traffic shifting.
 - **ECR repository**: Stores and versions Docker images for ECS tasks.
 - **Route 53 hosted zone & ACM**: Manages DNS with alias records pointing to the ALB, and issues/validates TLS certificates for secure HTTPS traffic.
 - **OpenID Connect (OIDC) integration with GitHub Actions**: Secure, keyless authentication from CI/CD workflows into AWS (no long-lived credentials stored in GitHub).
 - **Automated CI/CD pipelines**: 
   - **Docker pipeline**: Builds, scans (Trivy), and pushes container images to ECR.  
   - **Terraform pipeline**: Lints, validates, secures (TFLint + tfsec), and provisions AWS ECS infrastructure. 
+
 ## Architecture Diagram
 ![ezgif-719eab2db9b7ab](https://github.com/user-attachments/assets/dec86829-9eff-4bd2-9b14-302f281f6d48)
 
