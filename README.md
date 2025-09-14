@@ -20,17 +20,23 @@ This project provides a fully functional, production-ready deployment of **Gatus
 - **Terraform backend with S3**: Centralised state storage, versioning for rollbacks and encryption to secure sensitive data.
 - **VPC configuration**: Public subnets (one per AZ) for ALB and NAT Gateways, private subnets (one per AZ) for ECS tasks.
 - **Security Groups**: Inbound/outbound rules to control traffic between the ALB and ECS tasks.
-- **ECR repository**: Stores Docker images for ECS tasks.
-- **Route 53 hosted zone**: Manages DNS with alias records pointing to the ALB.
-- **Automated CI/CD pipelines**: Docker pipeline builds, scans and pushes Gatus images to ECR. Terraform pipeline provisions and manages AWS ECS infrastructure with linting, validation and TFsec.
-
+- **Application Load Balancer (ALB) with AWS WAF**: Provides secure ingress with managed firewall rules and continuous health monitoring. 
+  - Attached **AWSManagedRulesCommonRuleSet** for  protection against common web exploits.
+  - Configured ALB **health checks** to ensure ECS tasks are only considered healthy and added to the target group when the app is responsive.
+- **Blue/Green deployments with CodeDeploy**: Zero-downtime ECS service updates, automatic rollback on failed health checks, and controlled traffic shifting.
+- **ECR repository**: Stores and versions Docker images for ECS tasks.
+- **Route 53 hosted zone & ACM**: Manages DNS with alias records pointing to the ALB, and issues/validates TLS certificates for secure HTTPS traffic.
+- **OpenID Connect (OIDC) integration with GitHub Actions**: Secure, keyless authentication from CI/CD workflows into AWS (no long-lived credentials stored in GitHub).
+- **Automated CI/CD pipelines**: 
+  - **Docker pipeline**: Builds, scans (Trivy), and pushes container images to ECR.  
+  - **Terraform pipeline**: Lints, validates, secures (TFLint + tfsec), and provisions AWS ECS infrastructure. 
 ## Architecture Diagram
 ![ezgif-719eab2db9b7ab](https://github.com/user-attachments/assets/dec86829-9eff-4bd2-9b14-302f281f6d48)
 
 ## How To Use It
 
 ### Prerequisites
-- GitHub Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `REPO_NAME`  
+- OIDC role configured in AWS  
 - S3 bucket for Terraform remote state  
 
 
@@ -46,11 +52,10 @@ Update the following files with your values:
 - **Route53 module**: `variables.tf` → `domain_name`, `hosted_zone_id`  
 - **VPC module**: `variables.tf` & `local.tf` → regions, subnets  
 - **Root module**: `provider.tf` & `local.tf` → provider config  
-- **Gatus config**: `config.yaml` → public domains + optional features (see [Gatus docs](https://gatus.io/))  
+- **Gatus config**: `config.yaml` → public domains + optional features (see [Gatus docs](https://gatus.io/))
+- **ECS module**: `variables.tf` → `region`, `ecr_repo`, `ecr_registry`
 
 **Run Docker CI/CD pipeline manually**: Go to GitHub Actions → select **Docker CICD Pipeline** → click **Run workflow**.  
-- **ECS module**: `variables.tf` → `region`, `docker_image`  
-
 **Run Terraform pipeline manually**: Go to GitHub Actions → select **Terraform CICD Pipeline - ECS PROJECT** → click **Run workflow**.  
 
 ## App Walkthrough
