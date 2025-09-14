@@ -18,7 +18,7 @@ This project provides a fully functional, production-ready deployment of **Gatus
 
 ## Key features:
 - **Terraform backend with S3**: Centralised state storage, versioning for rollbacks and encryption to secure sensitive data.
-- **VPC configuration**: Public subnets (one per AZ) for ALB and NAT Gateways, private subnets (one per AZ) for ECS tasks.
+- **VPC configuration**: Public subnets (one per AZ) for ALB, private subnets (one per AZ) for ECS tasks, VPC endpoints for private connectivity to AWS services.
 - **Security Groups**: Inbound/outbound rules to control traffic between the ALB and ECS tasks.
 - **Application Load Balancer (ALB) with AWS WAF**: Provides secure ingress with managed firewall rules and continuous health monitoring. 
   - Attached **AWSManagedRulesCommonRuleSet** for  protection against common web exploits.
