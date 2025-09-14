@@ -35,10 +35,23 @@ variable "alb_target_arn" {
   type        = string
 }
 
-variable "ecr_image_uri" {
-  type    = string
-  default = "913513914993.dkr.ecr.eu-west-1.amazonaws.com/memosapp-repo-e:9d0d245172b46ee4c7b4fd7f78fcbb4f9d47298d"
-} 
+variable "ecr_registry" {
+  description = "ECR registry URI (account + region)"
+  type        = string
+  default     = "913513914993.dkr.ecr.eu-west-1.amazonaws.com"
+}
+
+variable "ecr_repo" {
+  description = "ECR repository name"
+  type        = string
+  default     = "memosapp-repo-e"
+}
+
+variable "imagetag" {
+  description = "Docker image tag to deploy"
+  type        = string
+  default     = "latest"
+}
 
 variable "container_port" {
   type    = number

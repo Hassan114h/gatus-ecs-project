@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 
   container_definitions = jsonencode([{
     name      = var.service_name
-    image     = var.ecr_image_uri
+    image     = "${var.ecr_registry}/${var.ecr_repo}:${var.imagetag}"
     cpu       = var.task_cpu
     memory    = var.task_memory
     essential = true
