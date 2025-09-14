@@ -41,27 +41,6 @@ resource "aws_security_group" "alb_security_group" {
   }
 }
 
-resource "aws_lb_target_group" "memos_tg" {
-  name        = "gatus-tg232568"
-  port        = var.container_port   
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip" 
-
-  health_check {
-    protocol            = "HTTP"
-    path                = "/"
-    interval            = 30
-    timeout             = 6
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200-399"
-  }
-
-  tags = {
-    Name = "gatus-tg232568"
-  }
-}
 
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
@@ -83,21 +62,80 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
+# Blue listener
 resource "aws_lb_listener" "alb_listener_https" {
-  load_balancer_arn = aws_lb.application_load_balancer.arn
-  port              = 443
-  protocol          = "HTTPS"
-  certificate_arn   = var.acm_cert_arn 
+   load_balancer_arn = aws_lb.application_load_balancer.arn
+   port              = 443
+   protocol          = "HTTPS"
+   certificate_arn   = var.acm_cert_arn
 
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.memos_tg.arn
+   default_action {
+     type             = "forward"
+     target_group_arn = aws_lb_target_group.blue.arn
+   }
+ }
+
+ # Test HTTPS listener (used by CodeDeploy for validation) # This sends real traffic after the health check is conducted
+ resource "aws_lb_listener" "alb_listener_test" {
+   load_balancer_arn = aws_lb.application_load_balancer.arn
+   port              = 8443
+   protocol          = "HTTPS"
+   certificate_arn   = var.acm_cert_arn
+
+   default_action {
+     type             = "forward"
+     target_group_arn = aws_lb_target_group.green.arn
+   }
+
+   tags = {
+     Name = "https_listener_test"
+   }
+ }
+
+resource "aws_lb_target_group" "blue" {
+  name        = "alb-tgblue14"
+  port        = var.container_port   
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip" 
+
+  health_check {
+    protocol            = "HTTP"
+    path                = "/healthz"
+    interval            = 30
+    timeout             = 6
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200-399"
   }
 
   tags = {
-    Name = "https_listener"
+    Name = "alb-tgblue14"
   }
 }
+
+ resource "aws_lb_target_group" "green" {
+   name        = "alb-tggreen14"
+   port        = var.container_port   
+   protocol    = "HTTP"
+   vpc_id      = var.vpc_id
+   target_type = "ip" 
+
+   health_check {
+     protocol            = "HTTP"
+     path                = "/healthz"
+     interval            = 30
+     timeout             = 6
+     healthy_threshold   = 2
+     unhealthy_threshold = 2
+     matcher             = "200-399"
+   }
+
+   tags = {
+     Name = "alb-tggreen14"
+   }
+}
+
 
 
 ## AWS WAF
@@ -145,3 +183,4 @@ resource "aws_wafv2_web_acl" "aws_common_rule" {
    resource_arn = aws_lb.application_load_balancer.arn 
    web_acl_arn  = aws_wafv2_web_acl.aws_common_rule.arn
  }
+

@@ -50,6 +50,3 @@ variable "private_subnets" {
   type        = list(string)
 }
 
-variable "lb_https_listener_arn" {
-  type        = string
-}

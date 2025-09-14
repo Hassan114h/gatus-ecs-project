@@ -77,6 +77,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   }
 }
 
+
 resource "aws_ecs_cluster" "main" {
   name = "gatus-cluster"
 
@@ -91,12 +92,16 @@ resource "aws_ecs_cluster" "main" {
 }
 
 resource "aws_ecs_service" "memos_service" {
-  name             = "gatus-service"
+  name             = var.service_name  
   cluster          = aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count    = 2
   launch_type      = "FARGATE"
   platform_version = "LATEST"
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
   
   network_configuration {
     subnets          = var.private_subnets
@@ -105,14 +110,10 @@ resource "aws_ecs_service" "memos_service" {
   }
 
   load_balancer {
-    target_group_arn = var.alb_target_arn
+    target_group_arn = var.alb_target_arn 
     container_name   = var.service_name
     container_port   = var.container_port
   }
-
-  depends_on = [
-    var.lb_https_listener_arn
-  ]
 
   tags = {
     Name = "gatus-service"
