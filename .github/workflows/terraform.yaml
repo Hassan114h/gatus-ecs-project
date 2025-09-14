@@ -14,55 +14,59 @@ jobs:
       TFLINT_VERSION: 'v0.46.1'
       TF_WORKING_DIR: './terraform'
 
+    permissions:
+      id-token: write     
+      contents: read      
+  
     steps:
-      - name: 'Checkout GitHub repository'
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+    - name: Configure AWS credentials (OIDC)
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::913513914993:role/GitHub_OIDC_role
+        aws-region: eu-west-1
 
-      - name: 'Set up Terraform'
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
 
-      - name: 'Set up TFLint'
-        uses: terraform-linters/setup-tflint@v4
-        with:
-          tflint_version: ${{ env.TFLINT_VERSION }}
+    - name: 'Set up Terraform'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
 
-      - name: 'Terraform Init'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform init
+    - name: 'Set up TFLint'
+      uses: terraform-linters/setup-tflint@v4
+      with:
+        tflint_version: ${{ env.TFLINT_VERSION }}
 
-      - name: 'Terraform Format'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform fmt
+    - name: 'Terraform Init'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: terraform init
 
-      - name: 'Terraform Validate'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform validate
+    - name: 'Terraform Format'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: terraform fmt
 
-      - name: 'TFLint'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: |
-          tflint --init
-          tflint
+    - name: 'Terraform Validate'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: terraform validate
 
-      - name: 'Run Tfsec'
-        uses: aquasecurity/tfsec-action@v1.0.0
-        with:
-          working_directory: ${{ env.TF_WORKING_DIR }}
-          additional_args: --no-colour --soft-fail
+    - name: 'TFLint'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: |
+        tflint --init
+        tflint
 
-      - name: 'Terraform Plan'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform plan -out=tfplan
+    - name: 'Run Tfsec'
+      uses: aquasecurity/tfsec-action@v1.0.0
+      with:
+        working_directory: ${{ env.TF_WORKING_DIR }}
+        additional_args: --no-colour --soft-fail
 
-      - name: 'Terraform Apply'
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply -auto-approve tfplan
+    - name: 'Terraform Plan'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: terraform plan -out=tfplan
+
+    - name: 'Terraform Apply'
+      working-directory: ${{ env.TF_WORKING_DIR }}
+      run: terraform apply -auto-approve tfplan
