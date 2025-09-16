@@ -32,7 +32,7 @@ This project provides a fully functional, production-ready deployment of **Gatus
   - **Terraform pipeline**: Lints, validates, secures (TFLint + tfsec), and provisions AWS ECS infrastructure. 
 
 ## Architecture Diagram
-![ezgif-719eab2db9b7ab](https://github.com/user-attachments/assets/dec86829-9eff-4bd2-9b14-302f281f6d48)
+![ezgif-6af6409b582662](https://github.com/user-attachments/assets/bc696495-0af9-44da-a6cd-cb2a7eeba3f9)
 
 ## How To Use It
 
