@@ -11,6 +11,7 @@ jobs:
       id-token: write     
       contents: read      
 
+    # Static repository name available to all steps
     env:
       ECR_REPOSITORY: gatusapp-repo-e
 
@@ -27,8 +28,10 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
+    - name: Set ECR_REGISTRY
+      # Assign step output to environment variable for later steps
+      run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
 
     - name: Build Docker image
       run: |
@@ -37,9 +40,10 @@ jobs:
     - name: Trivy Image Scan (fail on HIGH/CRITICAL)
       uses: aquasecurity/trivy-action@0.24.0
       with:
-        image-ref: ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
+        image-ref: $ECR_REGISTRY/$ECR_REPOSITORY:latest
         severity: HIGH,CRITICAL
 
     - name: Push Docker image
       run: |
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
