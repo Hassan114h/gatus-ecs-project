@@ -10,7 +10,10 @@ jobs:
     permissions:
       id-token: write     
       contents: read      
-  
+
+    env:
+      ECR_REPOSITORY: gatusapp-repo-e
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -18,29 +21,25 @@ jobs:
     - name: Configure AWS credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: arn:aws:iam::913513914993:role/GitHub_OIDC_role
+        role-to-assume: arn:aws:iam::913513914993:role/OIDC_ROLE
         aws-region: eu-west-1
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-
-    - name: Build Docker image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: memosapp-repo-e
+
+    - name: Build Docker image
       run: |
         docker build -f ./gatus/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ./gatus
 
     - name: Trivy Image Scan (fail on HIGH/CRITICAL)
       uses: aquasecurity/trivy-action@0.24.0
       with:
-        image-ref: ${{ steps.login-ecr.outputs.registry }}/url-project:latest
+        image-ref: ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
         severity: HIGH,CRITICAL
 
     - name: Push Docker image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: url-project
       run: |
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
