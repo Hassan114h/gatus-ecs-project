@@ -1,21 +1,15 @@
-# IDE
+# IDE and OS
 *.iml
 .idea
 .vscode
-
-# OS
 .DS_Store
 
-# JS
+# Dependencies / build
 node_modules
-
-# Go
 /vendor
+gatus
 
-# Misc
+# Databases
 *.db
 *.db-shm
 *.db-wal
-gatus
-config/config.yml
-config.yaml
