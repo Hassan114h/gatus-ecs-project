@@ -34,15 +34,16 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -f ./gatus/Dockerfile -t ${{ env.ECR_REGISTRY }}/$ECR_REPOSITORY:latest ./gatus
+        docker build -f ./gatus/Dockerfile -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest ./gatus
 
     - name: Trivy Image Scan (fail on HIGH/CRITICAL)
       uses: aquasecurity/trivy-action@0.24.0
       with:
-        image-ref: ${{ env.ECR_REGISTRY }}/$ECR_REPOSITORY:latest
+        image-ref: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
         severity: HIGH,CRITICAL
 
     - name: Push Docker image
       run: |
-        docker push ${{ env.ECR_REGISTRY }}/$ECR_REPOSITORY:latest
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+
 
