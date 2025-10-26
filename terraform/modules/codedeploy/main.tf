@@ -31,7 +31,7 @@ resource "aws_codedeploy_app" "gatus" {
 
 resource "aws_codedeploy_deployment_group" "blue_green_strategy" {
   app_name               = aws_codedeploy_app.gatus.name 
-  deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
+  deployment_config_name = "CodeDeployDefault.ECSLinear10PercentEvery1Minute"
   deployment_group_name  = "bluegreen"
   service_role_arn       = aws_iam_role.codedeploy.arn
 
@@ -42,7 +42,8 @@ resource "aws_codedeploy_deployment_group" "blue_green_strategy" {
 
   blue_green_deployment_config {
     deployment_ready_option {
-      action_on_timeout = "CONTINUE_DEPLOYMENT"
+      action_on_timeout    = "STOP_DEPLOYMENT"
+      wait_time_in_minutes = 60
     }
 
     terminate_blue_instances_on_deployment_success {
