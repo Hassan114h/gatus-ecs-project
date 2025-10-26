@@ -17,6 +17,7 @@
 This project provides a fully functional, production-ready deployment of **Gatus** on **AWS ECS Fargate**, following best practices for Docker containerisation and Terraform IaC, ensuring scalability and infrastructure automation. 
 
 ## Key features:
+- **DockerFile**: Multi-stage build using a minimal base image that runs as a non-root user, reducing size and improving security.
 - **Terraform backend with S3**: Centralised state storage, versioning for rollbacks and encryption to secure sensitive data.
 - **VPC configuration**: Public subnets (one per AZ) for ALB, private subnets (one per AZ) for ECS tasks, VPC endpoints for private connectivity to AWS services.
 - **Security Groups**: Inbound/outbound rules to control traffic between the ALB and ECS tasks.
