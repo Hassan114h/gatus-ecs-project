@@ -10,14 +10,15 @@ jobs:
 
     env:
       AWS_REGION: 'eu-west-1'
-      TF_VERSION: '1.4.0'
-      TFLINT_VERSION: 'v0.46.1'
-      TF_WORKING_DIR: './terraform'
 
     permissions:
-      id-token: write     
-      contents: read      
-  
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ./terraform  
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -25,34 +26,25 @@ jobs:
     - name: Configure AWS credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: arn:aws:iam::913513914993:role/GitHub_OIDC_role
-        aws-region: eu-west-1
-
+        role-to-assume: arn:aws:iam::913513914993:role/OIDC_ROLE
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: 'Set up Terraform'
       uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ env.TF_VERSION }}
 
     - name: 'Set up TFLint'
       uses: terraform-linters/setup-tflint@v4
-      with:
-        tflint_version: ${{ env.TFLINT_VERSION }}
 
     - name: 'Terraform Init'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform init
 
     - name: 'Terraform Format'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform fmt
 
     - name: 'Terraform Validate'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform validate
 
     - name: 'TFLint'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: |
         tflint --init
         tflint
@@ -60,13 +52,10 @@ jobs:
     - name: 'Run Tfsec'
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
-        working_directory: ${{ env.TF_WORKING_DIR }}
         additional_args: --severity HIGH,CRITICAL
 
     - name: 'Terraform Plan'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform plan -out=tfplan
 
     - name: 'Terraform Apply'
-      working-directory: ${{ env.TF_WORKING_DIR }}
       run: terraform apply -auto-approve tfplan
