@@ -44,7 +44,7 @@ variable "ecr_registry" {
 variable "ecr_repo" {
   description = "ECR repository name"
   type        = string
-  default     = "memosapp-repo-e"
+  default     = "gatusapp-repo-e"
 }
 
 variable "imagetag" {
