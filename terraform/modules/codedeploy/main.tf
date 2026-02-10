@@ -31,7 +31,7 @@ resource "aws_codedeploy_app" "gatus" {
 
 resource "aws_codedeploy_deployment_group" "blue_green_strategy" {
   app_name               = aws_codedeploy_app.gatus.name 
-  deployment_config_name = "CodeDeployDefault.ECSLinear10PercentEvery1Minute"
+  deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
   deployment_group_name  = "bluegreen"
   service_role_arn       = aws_iam_role.codedeploy.arn
 
