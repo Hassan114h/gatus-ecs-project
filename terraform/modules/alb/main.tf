@@ -101,7 +101,7 @@ resource "aws_lb_target_group" "blue" {
 
   health_check {
     protocol            = "HTTP"
-    path                = "/healthz"
+    path                = "/"
     interval            = 30
     timeout             = 6
     healthy_threshold   = 2
