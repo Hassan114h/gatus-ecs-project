@@ -35,6 +35,9 @@ This project provides a fully functional, production-ready deployment of **Gatus
 ## Architecture Diagram
 ![ezgif-6af6409b582662](https://github.com/user-attachments/assets/bc696495-0af9-44da-a6cd-cb2a7eeba3f9)
 
+## CodeDeploy In Action
+<img width="887" height="402" alt="image" src="https://github.com/user-attachments/assets/86eab772-6bf0-49df-b126-0875bde05afe" />
+
 ## How To Use It
 
 ### Prerequisites
