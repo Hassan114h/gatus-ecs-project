@@ -1,0 +1,103 @@
+name: CodeDeploy Pipeline 
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_uri:
+        description: "Full ECR image URI to deploy"
+        required: true
+        type: string
+
+env:
+  AWS_REGION: eu-west-1
+
+  # ECS
+  ECS_CLUSTER: gatus-cluster
+  ECS_SERVICE: gatus_sv
+  ECS_TASK_DEFINITION_FAMILY: gatusecs-task-service
+
+  # Container inside the task definition
+  CONTAINER_NAME: gatus_sv
+  CONTAINER_PORT: "8080"
+
+  # CodeDeploy
+  CODEDEPLOY_APPLICATION: gatus114codedeploy
+  CODEDEPLOY_DEPLOYMENT_GROUP: bluegreen
+
+jobs:
+  deploy-to-aws:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::913513914993:role/OIDC_ROLE
+          aws-region: ${{ env.AWS_REGION }}
+
+      # 1) Download current task definition from ECS
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition "${{ env.ECS_TASK_DEFINITION_FAMILY }}" \
+            --query taskDefinition > task-definition.json
+
+      # 2) Render a new task definition that points at your provided image
+      - name: Render new task definition with image
+        id: render
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ inputs.image_uri }}
+
+      # 3) Create appspec.json for CodeDeploy ECS blue/green
+      - name: Create appspec.json (inline)
+        run: |
+          # steps.render.outputs.task-definition is a FILE PATH to the registered task definition JSON
+          TASK_DEF_ARN=$(jq -r '.taskDefinitionArn' "${{ steps.render.outputs.task-definition }}")
+
+          echo "Deploying task definition: $TASK_DEF_ARN"
+          echo "Using image: ${{ inputs.image_uri }}"
+
+          cat > appspec.json <<EOF
+          {
+            "version": 0.0,
+            "Resources": [
+              {
+                "TargetService": {
+                  "Type": "AWS::ECS::Service",
+                  "Properties": {
+                    "TaskDefinition": "$TASK_DEF_ARN",
+                    "LoadBalancerInfo": {
+                      "ContainerName": "${{ env.CONTAINER_NAME }}",
+                      "ContainerPort": ${{ env.CONTAINER_PORT }}
+                    }
+                  }
+                }
+              }
+            ]
+          }
+          EOF
+
+          echo "Generated appspec.json:"
+          cat appspec.json
+
+      # 4) Trigger CodeDeploy deployment (blue/green traffic shifting)
+      - name: Deploy to ECS via CodeDeploy (blue/green)
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.json
+          codedeploy-application: ${{ env.CODEDEPLOY_APPLICATION }}
+          codedeploy-deployment-group: ${{ env.CODEDEPLOY_DEPLOYMENT_GROUP }}
