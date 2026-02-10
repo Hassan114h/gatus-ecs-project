@@ -115,6 +115,10 @@ resource "aws_ecs_service" "memos_service" {
     container_port   = var.container_port
   }
 
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
+  
   tags = {
     Name = "gatus-service"
   }
